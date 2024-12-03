@@ -1,0 +1,10 @@
+{
+    "name": "high-powered-motor",
+    "version": "0.1.0",
+    "title": "High-powered motor",
+    "author": "KlunkoPlunko",
+    "factorio_version": "2.0",
+    "dependencies": ["base >= 2.0"],
+    "description": "This mod adds a high-powered motor item."
+}
+
