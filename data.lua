@@ -22,6 +22,7 @@ local function defineHighPoweredMotor()
     hpm.icon = icon_graphic "high-powered-motor.png"
     hpm.order = "c[advanced-intermediates]-ba[high-powered-motor]"
     hpm.pick_sound = data.raw["item"]["engine-unit"].pick_sound
+    hpm.weight = 5000
     return hpm
 end
 
@@ -179,6 +180,39 @@ data:extend {
             },
         }
     },
+    -- Advanced processing subgroup
+    {
+        type = "item-subgroup",
+        name = "advanced-processing",
+        group = "intermediate-products",
+        order = "ca"
+    },
+    -- Industrial diamond
+    {
+        type = "item",
+        name = "kp_hpm-industrial-diamond",
+        subgroup = "advanced-processing",
+        order = "a[industrial-diamond]",
+        icon = icon_graphic "industrial-diamond.png",
+        icon_size = 64,
+        pick_sound = item_sounds.coin_inventory_pickup,
+        drop_sound = item_sounds.science_inventory_move,
+        inventory_move_sound = item_sounds.science_inventory_move,
+        stack_size = 100,
+        weight = 2500,
+    },
+    -- Industrial diamond recipe
+    {
+        type = "recipe",
+        name = "kp_hpm-industrial-diamond",
+        category = "advanced-crafting",
+        enabled = true,
+        energy_required = 30,
+        ingredients = {
+            {type = "item", name = "coal", amount = 50},
+        },
+        results = {{type = "item", name = "kp_hpm-industrial-diamond", amount = 1}}
+    },
     -- Rubber
     {
         type = "item",
@@ -191,6 +225,7 @@ data:extend {
         drop_sound = item_sounds.plastic_inventory_move,
         inventory_move_sound = item_sounds.plastic_inventory_move,
         stack_size = 100,
+        weight = 500,
     },
     -- Rubber recipe
     {
@@ -223,6 +258,7 @@ data:extend {
         drop_sound = item_sounds.wire_inventory_move,
         inventory_move_sound = item_sounds.wire_inventory_move,
         stack_size = 200,
+        weight = 250,
     },
     -- Chemical foam recipe
     {
@@ -254,6 +290,7 @@ data:extend {
         drop_sound = item_sounds.plastic_inventory_move,
         inventory_move_sound = item_sounds.plastic_inventory_move,
         stack_size = 100,
+        weight = 500,
     },
     -- Insulated cable recipe
     {
@@ -280,6 +317,7 @@ data:extend {
         drop_sound = item_sounds.plastic_inventory_move,
         inventory_move_sound = item_sounds.plastic_inventory_move,
         stack_size = 50,
+        weight = 1000,
     },
     -- Compound cable recipe
     {
