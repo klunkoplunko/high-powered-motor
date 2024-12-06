@@ -16,6 +16,15 @@ local function tech_graphic(path)
     return graphic "technology/" .. path
 end
 
+local function rotated_positions(position)
+    return {
+        position, 
+        {-position[2], position[1]}, 
+        {-position[1], -position[2]}, 
+        {position[1], -position[2]}
+    }
+end
+
 local function defineHighPoweredMotor()
     local hpm = table.deepcopy(data.raw["item"]["electric-engine-unit"])
     hpm.name = "kp_hpm-high-powered-motor"
@@ -61,7 +70,7 @@ local function defineAlloyFurnaceEntity()
     alloyFurnace.type = "assembling-machine"
     alloyFurnace.name = "kp_hpm-alloy-furnace"
     alloyFurnace.minable.result = "kp_hpm-alloy-furnace"
-    alloyFurnace.crafting_categories = {"kp_hpm-alloy-smelting"}
+    alloyFurnace.crafting_categories = {"alloy-smelting"}
     alloyFurnace.source_inventory_size = 2
 
     return alloyFurnace
@@ -70,7 +79,7 @@ end
 local function defineAlloyFurnaceItem()
     local alloyFurnace = table.deepcopy(data.raw["item"]["steel-furnace"])
     alloyFurnace.name = "kp_hpm-alloy-furnace"
-    alloyFurnace.icons = {{ icon = alloyFurnace.icon, icon_size = alloyFurnace.icon_size, tint = {0.77,0.77,0.77} }}
+    alloyFurnace.icons = {{icon = alloyFurnace.icon, icon_size = alloyFurnace.icon_size, tint = {0.77, 0.77, 0.77}}}
     alloyFurnace.order = "ca[alloy-furnace]"
     alloyFurnace.place_result = "kp_hpm-alloy-furnace"
 
@@ -91,22 +100,12 @@ local function alterAssmMachine3Fluid()
     data.raw["assembling-machine"]["assembling-machine-3"].fluid_boxes[3].pipe_connections = {{
         direction = defines.direction.east, 
         flow_direction = "output",
-        positions = {
-            {1, 0},
-            {0, 1},
-            {-1, 0},
-            {0, -1}
-        }
+        positions = rotated_positions {1, 0}
     }}
     data.raw["assembling-machine"]["assembling-machine-3"].fluid_boxes[4].pipe_connections = {{
         direction = defines.direction.west, 
         flow_direction = "output",
-        positions = {
-            {-1, 0},
-            {0, -1},
-            {1, 0},
-            {0, 1}
-        }
+        positions = rotated_positions {-1, 0}
     }}
 end
 
@@ -213,6 +212,100 @@ data:extend {
         },
         results = {{type = "item", name = "kp_hpm-industrial-diamond", amount = 1}}
     },
+    -- Sand
+    {
+        type = "item",
+        name = "kp_hpm-sand",
+        subgroup = "raw-material",
+        -- order = "a[industrial-diamond]",
+        icon = icon_graphic "sand-temp.png",
+        icon_size = 64,
+        -- pick_sound = item_sounds.coin_inventory_pickup,
+        -- drop_sound = item_sounds.science_inventory_move,
+        -- inventory_move_sound = item_sounds.science_inventory_move,
+        stack_size = 500,
+        weight = 250,
+    },
+    -- Sand recipe
+    {
+        type = "recipe",
+        name = "kp_hpm-sand",
+        enabled = true,
+        energy_required = 0.5,
+        ingredients = {
+            {type = "item", name = "stone", amount = 1},
+        },
+        results = {{type = "item", name = "kp_hpm-sand", amount = 2}}
+    },    
+    -- Sand recipe
+    {
+        type = "recipe",
+        name = "kp_hpm-sand",
+        enabled = true,
+        energy_required = 0.5,
+        ingredients = {
+            {type = "item", name = "stone", amount = 1},
+        },
+        results = {{type = "item", name = "kp_hpm-sand", amount = 2}}
+    },
+    -- Glass rod
+    {
+        type = "item",
+        name = "kp_hpm-glass-rod",
+        subgroup = "raw-material",
+        -- order = "a[industrial-diamond]",
+        icon = icon_graphic "glass-rod.png",
+        icon_size = 64,
+        pictures = {
+            {filename = icon_graphic "glass-rod.png", size = 64, scale = 0.5, mipmap_count = 4},
+            {filename = icon_graphic "glass-rod-1.png", size = 64, scale = 0.5, mipmap_count = 4},
+            {filename = icon_graphic "glass-rod-2.png", size = 64, scale = 0.5, mipmap_count = 4},
+            {filename = icon_graphic "glass-rod-3.png", size = 64, scale = 0.5, mipmap_count = 4},
+        },
+        -- pick_sound = item_sounds.coin_inventory_pickup,
+        -- drop_sound = item_sounds.science_inventory_move,
+        -- inventory_move_sound = item_sounds.science_inventory_move,
+        stack_size = 100,
+        weight = 500,
+    },
+    -- Glass rod recipe
+    {
+        type = "recipe",
+        name = "kp_hpm-glass-rod",
+        category = "smelting",
+        enabled = true,
+        energy_required = 3.2,
+        ingredients = {
+            {type = "item", name = "kp_hpm-sand", amount = 4},
+        },
+        results = {{type = "item", name = "kp_hpm-glass-rod", amount = 1}}
+    },
+    -- Glass plate
+    {
+        type = "item",
+        name = "kp_hpm-glass-plate",
+        subgroup = "raw-material",
+        -- order = "a[industrial-diamond]",
+        icon = icon_graphic "glass-plate.png",
+        icon_size = 64,
+        -- pick_sound = item_sounds.coin_inventory_pickup,
+        -- drop_sound = item_sounds.science_inventory_move,
+        -- inventory_move_sound = item_sounds.science_inventory_move,
+        stack_size = 100,
+        weight = 1000,
+    },
+    -- Glass plate recipe
+    {
+        type = "recipe",
+        name = "kp_hpm-glass-plate",
+        category = "smelting",
+        enabled = true,
+        energy_required = 16,
+        ingredients = {
+            {type = "item", name = "kp_hpm-glass-rod", amount = 5},
+        },
+        results = {{type = "item", name = "kp_hpm-glass-plate", amount = 1}}
+    },
     -- Rubber
     {
         type = "item",
@@ -267,7 +360,7 @@ data:extend {
         category = "chemistry",
         crafting_machine_tint = {
             primary = {0.718, 0.773, 0.639},
-            {0.475, 0.545, 0.412},
+            secondary = {0.475, 0.545, 0.412},
             tertiary = {0.768, 0.665, 0.762},
             quaternary = {0, 0, 0}
         },
@@ -359,7 +452,7 @@ data:extend {
     -- Alloy smelting recipe category
     {
         type = "recipe-category",
-        name = "kp_hpm-alloy-smelting"
+        name = "alloy-smelting"
     },
     -- Alloy furnace entity
     defineAlloyFurnaceEntity(),
@@ -396,7 +489,7 @@ data:extend {
     -- Brass plate recipe
     {
         type = "recipe",
-        category = "kp_hpm-alloy-smelting",
+        category = "alloy-smelting",
         name = "kp_hpm-brass-plate",
         enabled = true,
         energy_required = 3.2,
@@ -528,6 +621,239 @@ data:extend {
             {type = "item", name = "kp_hpm-empty-canister", amount = 1},
         },
         results = {{type = "item", name = "kp_hpm-hyperium-canister", amount = 1}}
+    },
+    -- Hydrogen
+    {
+        type = "fluid",
+        name = "kp_hpm-hydrogen",
+        subgroup = "fluid",
+        order = "c[gas]-a[hydrogen]",
+        icon = icon_graphic "hydrogen.png",
+        icon_size = 64,
+        default_temperature = 15,
+        gas_temperature = 15,
+        base_color = {0.706, 0.737, 0.784},
+        flow_color = {0.922, 0.922, 0.929},
+    },
+    -- Helium
+    {
+        type = "fluid",
+        name = "kp_hpm-helium",
+        subgroup = "fluid",
+        order = "c[gas]-b[helium]",
+        icon = icon_graphic "helium.png",
+        icon_size = 64,
+        default_temperature = 15,
+        gas_temperature = 15,
+        base_color = {0.290, 0.675, 0.714},
+        flow_color = {0.522, 0.882, 0.824}
+    },
+    -- Oxygen
+    {
+        type = "fluid",
+        name = "kp_hpm-oxygen",
+        subgroup = "fluid",
+        order = "c[gas]-c[oxygen]",
+        icon = icon_graphic "oxygen.png",
+        icon_size = 64,
+        default_temperature = 15,
+        gas_temperature = 15,
+        base_color = {0.675, 0.224, 0.243},
+        flow_color = {0.855, 0.271, 0.227}
+    },
+    -- Nitrogen
+    {
+        type = "fluid",
+        name = "kp_hpm-nitrogen",
+        subgroup = "fluid",
+        order = "c[gas]-d[nitrogen]",
+        icon = icon_graphic "nitrogen.png",
+        icon_size = 64,
+        default_temperature = 15,
+        gas_temperature = 15,
+        base_color = {0.298, 0.310, 0.722},
+        flow_color = {0.345, 0.424, 0.906}
+    },
+    -- Carbon dioxide
+    {
+        type = "fluid",
+        name = "kp_hpm-carbon-dioxide",
+        subgroup = "fluid",
+        order = "c[gas]-e[carbon-dioxide]",
+        icon = icon_graphic "carbon-dioxide.png",
+        icon_size = 64,
+        default_temperature = 15,
+        gas_temperature = 15,
+        base_color = {0.2, 0.2, 0.2},
+        flow_color = {0.3, 0.3, 0.3}
+    },
+    -- Argon
+    {
+        type = "fluid",
+        name = "kp_hpm-argon",
+        subgroup = "fluid",
+        order = "c[gas]-f[argon]",
+        icon = icon_graphic "argon.png",
+        icon_size = 64,
+        default_temperature = 15,
+        gas_temperature = 15,
+        base_color = {0.490, 0.173, 0.545},
+        flow_color = {0.663, 0.251, 0.671}
+    },
+    {
+        type = "recipe-category",
+        name = "gas-processing"
+    },
+    -- Gas machine item
+    {
+        type = "item",
+        name = "kp_hpm-gas-machine",
+        subgroup = "production-machine",
+        order = "ea[gas-machine]",
+        icon = icon_graphic "gas-machine.png",
+        icon_size = 64,
+        stack_size = 10,
+        place_result = "kp_hpm-gas-machine"
+    },
+    -- Gas machine entity
+    {
+        type = "assembling-machine",
+        name = "kp_hpm-gas-machine",
+        order = "z-da[gas-machine]",
+        icon = icon_graphic "gas-machine.png",
+        icon_size = 64,
+        collision_box = {{-2.4, -2.4}, {2.4, 2.4}},
+        selection_box = {{-2.5, -2.5}, {2.5, 2.5}},
+        drawing_box_vertical_extension = 0.3,
+        graphics_set = {
+            animation = {
+                filename = entity_graphic "gas-machine.png",
+                size = 320,
+                scale = 0.5,
+            }
+        },
+        minable = {
+            mining_time = 0.2,
+            result = "kp_hpm-gas-machine",
+        },
+        max_health = 350,
+        energy_usage = "10kW",
+        crafting_speed = 1,
+        crafting_categories = {"gas-processing"},
+        energy_source = {
+            type = "electric", 
+            usage_priority = "secondary-input", 
+            buffer_capacity = "7.5kW",
+            drain = "0.23kW",
+            emissions = {pollution = 6}
+        },
+        fluid_boxes = {
+            {
+                -- Top-left output
+                volume = 1000,
+                production_type = "output",
+                pipe_connections = {{
+                    flow_direction = "output",
+                    direction = defines.direction.north,
+                    positions = rotated_positions {-1, -2}
+                }}
+            },
+            {
+                -- Top-right output
+                volume = 1000,
+                production_type = "output",
+                pipe_connections = {{
+                    flow_direction = "output",
+                    direction = defines.direction.north,
+                    positions = rotated_positions {1, -2}
+                }}
+            },
+            {
+                -- Bottom-left output
+                volume = 1000,
+                production_type = "output",
+                pipe_connections = {{
+                    flow_direction = "output",
+                    direction = defines.direction.south,
+                    positions = rotated_positions {-1, 2}
+                }}
+            },
+            {
+                -- Bottom-right output
+                volume = 1000,
+                production_type = "output",
+                pipe_connections = {{
+                    flow_direction = "output",
+                    direction = defines.direction.south,
+                    positions = rotated_positions {1, 2}
+                }}
+            },
+            {
+                -- Left-top input
+                volume = 1000,
+                production_type = "input",
+                pipe_connections = {{
+                    flow_direction = "input",
+                    direction = defines.direction.west,
+                    positions = rotated_positions {-2, -1}
+                }}
+            },
+            {
+                -- Left-bottom input
+                volume = 1000,
+                production_type = "input",
+                pipe_connections = {{
+                    flow_direction = "input",
+                    direction = defines.direction.west,
+                    positions = rotated_positions {-2, 1}
+                }}
+            },
+            {
+                -- Right-top input
+                volume = 1000,
+                production_type = "input",
+                pipe_connections = {{
+                    flow_direction = "input",
+                    direction = defines.direction.east,
+                    positions = rotated_positions {2, -1}
+                }}
+            },
+            {
+                -- Right-bottom input
+                volume = 1000,
+                production_type = "input",
+                pipe_connections = {{
+                    flow_direction = "input",
+                    direction = defines.direction.east,
+                    positions = rotated_positions {2, 1}
+                }}
+            },
+        }
+    },
+    -- Air capture recipe
+    {
+        type = "recipe",
+        name = "kp_hpm-air-capture-recipe",
+        order = "a[air-capture]",
+        category = "gas-processing",
+        icon = icon_graphic "nitrogen.png",
+        icon_size = 64,
+        enabled = true,
+        energy_required = 1,
+        results = {
+            {type = "fluid", name = "kp_hpm-nitrogen", amount = 8},
+            {type = "fluid", name = "kp_hpm-oxygen", amount = 2},
+            {type = "fluid", name = "kp_hpm-carbon-dioxide", amount = 1},
+            {type = "fluid", name = "kp_hpm-argon", amount = 1},
+        }
+    },
+    -- Barrelling item group
+    {
+        type = "item-group",
+        name = "barrelling",
+        order = "ca",
+        icon = graphic "item-group/barrelling.png",
+        icon_size = 128,
     },
 }
 
