@@ -1,5 +1,7 @@
 local item_sounds = require("__base__.prototypes.item_sounds")
 
+-- require("peashooter-turret.lua")
+
 local function graphic(path)
     return "__high-powered-motor__/graphics/" .. path
 end
@@ -737,7 +739,7 @@ data:extend {
             result = "kp_hpm-gas-machine",
         },
         max_health = 350,
-        energy_usage = "10kW",
+        energy_usage = "200kW",
         crafting_speed = 1,
         crafting_categories = {"gas-processing"},
         energy_source = {
@@ -855,5 +857,17 @@ data:extend {
         icon = graphic "item-group/barrelling.png",
         icon_size = 128,
     },
+    -- Peashooter item
+    {
+        type = "item",
+        name = "kp_hpm-peashooter-turret",
+        subgroup = "turret",
+        order = "b[turret]-aa[peashooter-turret]"
+        icon = icon_graphic "peashooter-turret.png",
+        icon_size = 64,
+        stack_size = 50,
+    },
+    
+
 }
 
