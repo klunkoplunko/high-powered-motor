@@ -127,6 +127,31 @@ data.raw["recipe"]["advanced-circuit"].ingredients = {
 }
 
 data:extend {
+    -- Gizmo item
+    {
+        type = "item",
+        name = "kp_hpm-gizmo",
+        subgroup = "intermediate-product",
+        order = data.raw["item"]["iron-gear-wheel"].order .. "-a",
+        icon = icon_graphic "gizmo.png",
+        icon_size = 64,
+        stack_size = 100,
+        weight = 1000,
+    },
+    -- Gizmo recipe
+    {
+        type = "recipe",
+        name = "kp_hpm-gizmo",
+        category = "crafting-with-fluid",
+        enabled = true,
+        energy_required = 0.5,
+        ingredients = {
+            {type = "item", name = "iron-gear-wheel", amount = 2},
+            {type = "item", name = "iron-stick", amount = 1},
+            {type = "fluid", name = "lubricant", amount = 10}
+        },
+        results = {{type = "item", name = "kp_hpm-gizmo", amount = 1}}
+    },
     -- Gasoline fluid
     {
         type = "fluid",
@@ -738,6 +763,7 @@ data:extend {
             mining_time = 0.2,
             result = "kp_hpm-gas-machine",
         },
+        flags = {"placeable-neutral", "player-creation"},
         max_health = 350,
         energy_usage = "200kW",
         crafting_speed = 1,
@@ -867,7 +893,6 @@ data:extend {
         icon_size = 64,
         stack_size = 50,
     },
-    
 
 }
 
