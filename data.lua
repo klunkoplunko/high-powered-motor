@@ -23,7 +23,7 @@ local function rotated_positions(position)
         position, 
         {-position[2], position[1]}, 
         {-position[1], -position[2]}, 
-        {position[1], -position[2]}
+        {position[2], -position[1]}
     }
 end
 
@@ -862,7 +862,7 @@ data:extend {
         type = "item",
         name = "kp_hpm-peashooter-turret",
         subgroup = "turret",
-        order = "b[turret]-aa[peashooter-turret]"
+        order = "b[turret]-aa[peashooter-turret]",
         icon = icon_graphic "peashooter-turret.png",
         icon_size = 64,
         stack_size = 50,
