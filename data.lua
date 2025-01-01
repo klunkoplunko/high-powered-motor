@@ -88,30 +88,26 @@ local function defineAlloyFurnaceItem()
     return alloyFurnace
 end
 
-local function alterAssmMachine3Fluid()
-    -- Give assembling machine 3 a second fluid input and two fluid outputs
-    -- Copy output pipe
-    data.raw["assembling-machine"]["assembling-machine-3"].fluid_boxes[3] = table.deepcopy(data.raw["assembling-machine"]["assembling-machine-3"].fluid_boxes[2])
-    data.raw["assembling-machine"]["assembling-machine-3"].fluid_boxes[4] = table.deepcopy(data.raw["assembling-machine"]["assembling-machine-3"].fluid_boxes[2])
+-- Give assembling machine 3 a second fluid input and two fluid outputs
+-- Copy output pipe
+data.raw["assembling-machine"]["assembling-machine-3"].fluid_boxes[3] = table.deepcopy(data.raw["assembling-machine"]["assembling-machine-3"].fluid_boxes[2])
+data.raw["assembling-machine"]["assembling-machine-3"].fluid_boxes[4] = table.deepcopy(data.raw["assembling-machine"]["assembling-machine-3"].fluid_boxes[2])
 
-    -- Set south pipe to input
-    data.raw["assembling-machine"]["assembling-machine-3"].fluid_boxes[2].production_type = "input"
-    data.raw["assembling-machine"]["assembling-machine-3"].fluid_boxes[2].pipe_connections[1].flow_direction = "input"
+-- Set south pipe to input
+data.raw["assembling-machine"]["assembling-machine-3"].fluid_boxes[2].production_type = "input"
+data.raw["assembling-machine"]["assembling-machine-3"].fluid_boxes[2].pipe_connections[1].flow_direction = "input"
 
-    -- Set east and west pipes
-    data.raw["assembling-machine"]["assembling-machine-3"].fluid_boxes[3].pipe_connections = {{
-        direction = defines.direction.east, 
-        flow_direction = "output",
-        positions = rotated_positions {1, 0}
-    }}
-    data.raw["assembling-machine"]["assembling-machine-3"].fluid_boxes[4].pipe_connections = {{
-        direction = defines.direction.west, 
-        flow_direction = "output",
-        positions = rotated_positions {-1, 0}
-    }}
-end
-
-alterAssmMachine3Fluid()
+-- Set east and west pipes
+data.raw["assembling-machine"]["assembling-machine-3"].fluid_boxes[3].pipe_connections = {{
+    direction = defines.direction.east, 
+    flow_direction = "output",
+    positions = rotated_positions {1, 0}
+}}
+data.raw["assembling-machine"]["assembling-machine-3"].fluid_boxes[4].pipe_connections = {{
+    direction = defines.direction.west, 
+    flow_direction = "output",
+    positions = rotated_positions {-1, 0}
+}}
 
 -- Replace sulfur with battery in chem science recipe
 data.raw["recipe"]["chemical-science-pack"].ingredients = {
@@ -130,7 +126,7 @@ data:extend {
     -- Gizmo item
     {
         type = "item",
-        name = "kp_hpm-gizmo",
+        name = "kp_hpm-iron-gizmo",
         subgroup = "intermediate-product",
         order = data.raw["item"]["iron-gear-wheel"].order .. "-a",
         icon = icon_graphic "gizmo.png",
@@ -141,7 +137,7 @@ data:extend {
     -- Gizmo recipe
     {
         type = "recipe",
-        name = "kp_hpm-gizmo",
+        name = "kp_hpm-iron-gizmo",
         category = "crafting-with-fluid",
         enabled = true,
         energy_required = 0.5,
@@ -150,7 +146,28 @@ data:extend {
             {type = "item", name = "iron-stick", amount = 1},
             {type = "fluid", name = "lubricant", amount = 10}
         },
-        results = {{type = "item", name = "kp_hpm-gizmo", amount = 1}}
+        results = {{type = "item", name = "kp_hpm-iron-gizmo", amount = 1}}
+    },
+    -- Copper tubing item
+    {
+        type = "item",
+        name = "kp_hpm-copper-tubing",
+        subgroup = "intermediate-product",
+        order = "a[basic-intermediates]-ba[copper-tubing]",
+        icon = icon_graphic "copper-tubing.png",
+        icon_size = 64,
+        stack_size = 100,
+        weight = 1000,
+    },
+    {
+        type = "recipe",
+        name = "kp_hpm-copper-tubing",
+        enabled = true,
+        energy_required = 0.5,
+        ingredients = {
+            {type = "item", name = "copper-plate", amount = 2},
+        },
+        results = {{type = "item", name = "kp_hpm-copper-tubing", amount = 1}}
     },
     -- Gasoline fluid
     {
